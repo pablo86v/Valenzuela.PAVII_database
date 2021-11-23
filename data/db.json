@@ -1,0 +1,38 @@
+{
+    "tipos": [
+      {
+        "id": 1,
+        "desc": "Perro"
+      },
+      {
+        "id": 2,
+        "desc": "Gato"
+      },
+      {
+        "id": 3,
+        "desc": "Reptil"
+      }
+    ],
+    "mascotas": [
+      {
+        "id": 2,
+        "nombre": "Newton",
+        "tipo": "Gato"
+      },
+      {
+        "nombre": "Leonera",
+        "tipo": "Perro",
+        "id": 3
+      },
+      {
+        "nombre": "Juancho",
+        "tipo": "Reptil",
+        "id": 5
+      },
+      {
+        "nombre": "Patas",
+        "tipo": "Gato",
+        "id": 6
+      }
+    ]
+  }
