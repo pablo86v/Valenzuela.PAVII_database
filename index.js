@@ -1,75 +1,40 @@
 const express = require('express');
-const uuid = require('short-uuid');
+const {getAll, getOne, add, update, remove} = require('./controller'); 
 const app = express();
 const port = 3000;
-const db = require('./data/db.json');
 
 
 app.use(express.json());
 
 app.get('/', function (req, res) {
-  res.json(db);
+  res.json(getAll());
 })
 
 app.get("/:id", (req,res) => {
-    res.json(db.mascotas.find(i => i.id == req.params.id));
+    res.json(getOne(req.params.id));
 })
 
 app.post('/', function (req, res) {
-    const {nombre, tipo} = req.body;
-
-    if(!nombre || !tipo){
-        res.json({ok: false, mensaje: "Faltan datos."});
-        return;
+    if(!add(req.body)){
+        res.json({ok: false, message: "Faltan datos."});
+    }else{
+        res.json({ok: true, message: "Información agregada."});
     }
-
-    const newMascota = {
-        nombre, 
-        tipo,
-        id : uuid.generate() 
-    };
-
-    db.mascotas.push(newMascota);
-    res.json(db.mascotas);
 })
 
 app.put('/', function (req, res) {
-    const mascotaEditar = db.mascotas.find(e => e.id.toString() === req.body.id.toString());
-
-    if(mascotaEditar) {
-        for(const key in req.body) {
-            if(Object.hasOwnProperty.call(mascotaEditar, key)) {
-                mascotaEditar[key] = req.body[key];
-            }
-        }
-        res.json({
-            ok: true,
-            msg: 'Mascota editada'
-        });
-        return;
+    if(!update(req.body)){
+        res.json({ok: false, message: "No se pudieron actualizar los datos."});
     }else{
-        res.json({
-            ok: false,
-            msg: 'Mascota no encontrada'
-        });
+        res.json({ok: true, message: "Información actualizada."});
     }
 })
 
 app.delete('/:id', function (req, res) {
-    const mascotaEliminarId = db.mascotas.findIndex(e => e.id.toString() === req.params.id.toString());
-
-    if(mascotaEliminarId != -1){
-        db.mascotas.splice(mascotaEliminarId, 1);
-        res.json({
-            ok: true,
-            msg: 'Mascota eliminada'
-        });
-        return;
+    if(!remove(req.params.id)){
+        res.json({ok: false, message: "No se pudieron eliminar los datos."});
     }else{
-        res.json({
-            ok: false,
-            msg: 'Mascota no encontrada'
-        });
+        res.json({ok: true, message: "Información eliminada."});
     }
 });
 
